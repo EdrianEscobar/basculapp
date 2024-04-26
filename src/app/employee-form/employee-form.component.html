@@ -1,0 +1,88 @@
+
+<link rel="stylesheet" href="./employee-form.component.css">
+<div class="form-container">
+  <p style="font-size: 24px; font-weight: bold; color: #0511f4; text-align: center; margin-top: 20px;">
+      Formulario Detalles de emisión
+  </p>
+  
+  <div class="row">
+        <div class="column">
+            <label for="employeeId">ID Empleado:</label>
+            <h1 style="font-size: 22px; color: #666;">{{ employeeId }}</h1>
+        </div>
+        <div class="column">
+            <label for="Nombre">Nombre del empleado:</label>
+            <h1 style="font-size: 22px; color: #666;">{{ basicName }}</h1>
+        </div>
+        <div class="column">
+            <label for="jobNum">Trabajo:</label>
+            <h1 style="font-size: 22px; color: #666;">{{ jobNum }}</h1>
+        </div>   
+  </div>
+
+    <div class="row">
+        <div class="column">
+            <div class="form-group">
+                <label for="scrapCode">Código de Desperdicio:</label>
+                <select id="scrapCode" [(ngModel)]="selectedScrapCode" (change)="onScrapCodeChange()">
+                    <option *ngFor="let code of codigosDespSellado" [ngValue]="code">
+                        {{ code.Reason_ReasonCode }}
+                    </option>
+                </select>
+            </div>       
+        </div>
+        <div class="column">
+                <input type="text" [(ngModel)]="selectedDescription" [disabled]="!active">
+        </div>
+            <div class="column">
+                <input type="text" id="pesoBascula" [(ngModel)]="pesoBascula" name="pesoBascula" [disabled]="!selectedScrapCode">
+                <label for="pesoBascula">Peso:</label>
+            </div>
+        <div class="row">
+            <div class="column full-width">
+                <label for="notes">Notas:</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Escribe tus notas aquí..."></textarea>
+            </div>
+        </div>
+        <div class="column">
+            <button id="send" type="button" [disabled]="!selectedScrapCode" (click)="guardarReporte()">Guardar</button>
+
+        </div>
+    </div>
+    <table id="table">
+        <thead>
+            <tr> 
+            <th>#</th>
+            <th>ID Empleado</th>
+            <th>Trabajo</th>
+            <th>Código de Desperdicio</th>
+            <th>Descripción</th>
+            <th>Máquina</th>
+            <th>Peso</th>
+            <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reporte of reportes; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ reporte.employeeId }}</td>
+            <td>{{ reporte.jobNum }}</td>
+            <td>{{ reporte.scrapCode }}</td>
+            <td>{{ reporte.description }}</td>
+            <td>{{ reporte.machine }}</td>
+            <td>{{ reporte.pesoBascula }}</td>
+            <td>
+                <select (change)="accionSeleccionada($event, i)">
+                    <option value="" disabled selected>Seleccione</option>
+                    <option value="editar">Editar</option>
+                    <option value="eliminar">Eliminar</option>
+                </select>                
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button">Enviar Desperdicio</button>  
+</div>
+
+
+

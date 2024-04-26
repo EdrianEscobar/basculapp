@@ -1,0 +1,101 @@
+.form-container {
+    width: 100%; /* Utiliza todo el ancho disponible o ajusta a un valor específico mayor */
+    max-width: 1200px; /* Añade un máximo si deseas limitar el ancho total */
+    margin: auto; /* Centra el contenedor en la página */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(25, 10, 232, 0.982);
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.column {
+    padding: 2px;
+    flex: 1 1 33%; /* Cada columna toma aproximadamente un tercio del espacio disponible */
+    min-width: 20px; /* Ajusta según la cantidad mínima de espacio que cada columna debe tener */
+}
+
+.row {
+    
+    display: flex;
+    justify-content: space-between; /* Asegura que las columnas se distribuyan uniformemente */
+    flex-wrap: no-wrap; /* Evita que las columnas se envuelvan a la siguiente línea */
+    align-items: center; /* Alinea verticalmente los elementos dentro de las columnas */
+    margin-bottom: 0px; /* Ajusta el espacio entre filas si es necesario */
+}
+
+@media (max-width: 800px) {
+    .column {
+        flex: 1 1 100%; /* Cada columna toma todo el ancho en pantallas pequeñas */
+    }
+}
+
+textarea {
+    width: 100%; /* Asegura que ocupe toda la columna */
+    padding: 8px; /* Espacio interno para que la escritura no esté justo en el borde */
+    border: 1px solid #3910dc; /* Borde sutil, puedes ajustar el color según tu diseño */
+    border-radius: 4px; /* Bordes redondeados para seguir la estética del formulario */
+    box-sizing: border-box; /* Asegura que el padding y border no expandan el elemento más allá del 100% width */
+    min-height: 100px; /* Altura mínima para dar suficiente espacio para escribir */
+}
+
+.full-width {
+    flex: 1 1 100%; /* Ocupa todo el ancho de la fila */
+}
+
+/* Estilos generales para la tabla */
+.table {
+    width: 100%; /* Utiliza todo el ancho disponible */
+    border-collapse: collapse; /* Elimina el espacio entre las celdas */
+    margin-top: 20px; /* Espacio superior para separar de otros elementos */
+  }
+  
+  /* Estilos para las celdas de encabezado y cuerpo de la tabla */
+  th, td {
+    text-align: center; /* Centra el texto en las celdas */
+    padding: 8px; /* Espacio interno en todas las direcciones */
+    border-bottom: 1px solid #ccc; /* Línea divisoria entre filas */
+  }
+  
+  /* Estilos específicos para el encabezado de la tabla */
+  th {
+    background-color: #f4f4f4; /* Color de fondo para el encabezado */
+    color: #333; /* Color del texto */
+    font-weight: bold; /* Texto en negrita */
+  }
+  
+  /* Estilos para filas alternas del cuerpo de la tabla para mejorar la legibilidad */
+  tbody tr:nth-child(odd) {
+    background-color: #fafafa; /* Color de fondo para filas impares */
+  }
+  
+  tbody tr:hover {
+    background-color: #e9e9e9; /* Color de fondo al pasar el mouse */
+  }
+
+  button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: rgb(10, 49, 247);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+select {
+  padding: 4px;
+  margin: 0 2px;
+  border-radius: 4px;
+}
+
+select:focus {
+  outline: none;
+  border-color: blue;
+}
+
+
+  

@@ -175,11 +175,129 @@
       margin-block: 1.5rem;
     }
   }
+  .row {
+  display: flex;
+  justify-content: space-between; /* Espaciado uniforme entre los elementos */
+}
+
+.column {
+  flex: 1; /* Ocupa el espacio disponible */
+  margin-right: 5px; /* Espacio entre columnas */
+
+}
+
+.guardar {
+  background-color: #4CAF50; 
+  border: 2px solid black;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  height: 40px;
+  margin-top: 60px;
+}
+
+.left-side {
+  width: 60%;
+  padding: 10px;
+}
+
+.fieldset {
+  border: 2px solid black;
+  padding: 10px;
+  background-color:dimgrey;
+}
 </style>
 
 <main class="main">
-  <div class="content">
-    <div class="left-side">
+     <!-- <div class="content">
+    <div >
+      <h1>Hello {{ title }}, {{ name }}</h1>
+        <h1>Reporte de desperdicios</h1>
+        <br>
+        <form (ngSubmit)="onSubmit()">
+          <fieldset class="fieldset" >
+            <legend style="font-weight: bolder; font-size: 30px;">Datos de la emisión</legend>
+              <div class="row">
+                <div class="column">
+                  <input type="text" id="employeeId" [(ngModel)]="employee.Id" name="employeeId" maxlength="5">
+                  <br>
+                  <label for="employeeId" >Ingresa tu id</label>
+                  <button id="search" (click)="searchEmployee(employeeId)" type="button">Buscar</button>
+                </div>
+                <div class="column">
+                  <input type="any" id="jobNum" [(ngModel)]="employee.jobNum" name="Job" [disabled]="!editable">
+                  <br>
+                  <label for="jobNum">Trabajo</label>
+                </div> 
+              </div>
+              <div class="row">
+                <div class="column">
+                  <input type="any" id="name" [(ngModel)]="employee.Name" name="name" [disabled]="!editable">
+                  <br>
+                  <label for="name">Nombre</label>
+                </div>
+                <div class="column">
+                  <input type="any" id="part" [(ngModel)]="employee.Part" name="part" [disabled]="!editable">
+                  <br>
+                  <label for="part">Parte</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="column">
+                  <input type="any" id="shift" [(ngModel)]="employee.Shift" name="shift" [disabled]="!editable">
+                  <br>
+                  <label for="shift">Turno</label>
+                </div>
+                <div class="column">
+                  <input type="any" id="date" [(ngModel)]="employee.Date" name="date" [disabled]="!editable">
+                  <br>
+                  <label for="date">Fecha</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="column">
+                  <input type="any" id="resource" [(ngModel)]="employee.Resource" name="resource" [disabled]="!editable">
+                  <br>
+                  <label for="resource">Máquina</label>
+                </div>
+                <div class="column">
+                  <select name="codigo" [(ngModel)]="codigoSeleccionado">
+                     
+                    <option ngValue="1">127 - REFILE</option>
+                    <option ngValue="2">070 - CAMBIO DE ROLLO</option>
+                    <option ngValue="3">107 - ENSAYOS</option>
+                    <option ngValue="4">082 - ARRANQUES</option>
+                    <option ngValue="5">117 - INHERENTES</option>
+                    <option ngValue="6">054 - AJUSTE DE FOTOCELDA</option>
+                  </select>
+                  <br>
+                  <label for="Codigos">Códigos de desperdicio</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="column">
+                  <h1>Peso</h1>
+                    <input type="any" [(ngModel)]="pesoRegistrado" [disabled]="!editable" >
+                </div>
+                <div class="column">
+                  <h1>Motivo</h1>
+                  <input type="text" [disabled]="!editable" [value]="codigoSeleccionado">
+                </div>
+                    <button class="guardar" type="submit">Guardar</button>
+              </div>
+          </fieldset>
+        </form>
+    </div>
+    <div class="divider" role="separator" aria-label="Divider"></div>
+    
+    
+  <div class="center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 982 239"
@@ -225,7 +343,7 @@
           <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
         </defs>
       </svg>
-      <h1>Hello, {{ title }}</h1>
+      <h1>Hello</h1>
       <p>Congratulations! Your app is running. 🎉</p>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
@@ -320,9 +438,9 @@
           </svg>
         </a>
       </div>
-    </div>
+    </div> 
   </div>
-</main>
+</main>-->
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
@@ -331,6 +449,5 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-
+<app-product></app-product>
 <router-outlet />
