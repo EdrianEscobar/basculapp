@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductComponent, ProductService } from './components/product/product.component';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, ProductComponent ,HttpClientModule],
+  imports: [RouterOutlet, FormsModule, ProductComponent ,HttpClientModule, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private httpClient: HttpClient) { }
   ngOnInit(): void {
     this.searchEmployee(this.employeeId);
   }

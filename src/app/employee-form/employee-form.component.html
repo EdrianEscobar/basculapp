@@ -1,6 +1,7 @@
 
 <link rel="stylesheet" href="./employee-form.component.css">
 <div class="form-container">
+    <button type="button" (click)="onClose()">X</button>
   <p style="font-size: 24px; font-weight: bold; color: #0511f4; text-align: center; margin-top: 20px;">
       Formulario Detalles de emisión
   </p>
@@ -40,13 +41,15 @@
             </div>
         <div class="row">
             <div class="column full-width">
-                <label for="notes">Notas:</label>
-                <textarea id="notes" name="notes" rows="4" placeholder="Escribe tus notas aquí..."></textarea>
+                <label for="label">Notas:</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Escribe tus notas aquí..." [(ngModel)]="notes"></textarea>
             </div>
         </div>
         <div class="column">
             <button id="send" type="button" [disabled]="!selectedScrapCode" (click)="guardarReporte()">Guardar</button>
-
+        </div>
+        <div class="column">
+            <button (click)="openOtherProcesses()" type="button">Otros Procesos</button>
         </div>
     </div>
     <table id="table">
@@ -81,8 +84,9 @@
             </tr>
         </tbody>
     </table>
-    <button type="button">Enviar Desperdicio</button>  
+    <button type="button" (click)="postReporte(jsonData,url)">Enviar Desperdicio</button>  
 </div>
+<!-- <router-outlet></router-outlet> -->
 
 
 

@@ -1,15 +1,10 @@
 <link rel="stylesheet" href="product.component.css">
-<!-- <div>
-  <h1>aqui va la imagen</h1>
-  <img ngSrc="src/app/components/product/LogoAlicoAzul.png" alt="Logo Alico Azul" width="32" height="32">
-</div> -->
-
 <div  id="ppal" style="padding: 50px">
-    <h1 class="text-center">Example Basculapp Api</h1>
+    <h1 class="text-center">BASCULAPP</h1>
     <div class="column">
       <input type="text" id="employeeId" [(ngModel)]="employeeId" name="employeeId" maxlength="5" >
       <br>
-      <label for="employeeId">Ingresa tu id</label>
+      <label for="employeeId">INGRESA TU ID EMPLEADO</label>
       <button id="search" type="button" (click)="searchEmployee()">Buscar</button>
     </div>
     <table id="table" class="table table-hover">
@@ -22,17 +17,19 @@
           <th scope="col">Parte</th>
           <th scope="col">Turno</th>
           <th scope="col">Nombre Empleado</th>
+          <th scope="col">Assembly</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of datosApi">
-          <td><button (click)="openDialog(item.LaborDtl_EmployeeNum, item.LaborDtl_JobNum, item.EmpBasic_Name, item.LaborDtl_ResourceID)">{{ item.LaborDtl_EmployeeNum }}</button> 
+          <td><button (click)="openEmployeeForm(item.LaborDtl_EmployeeNum, item.LaborDtl_JobNum, item.EmpBasic_Name, item.LaborDtl_ResourceID) ">{{ item.LaborDtl_EmployeeNum }}</button> 
           <td>{{ item.LaborDtl_JobNum }}</td>
           <td>{{ item.LaborDtl_ResourceID }}</td>
           <td>{{ item.LaborDtl_ClockInDate | date: 'yyyy-MM-dd' }}</td>
           <td>{{ item.JobHead_PartNum }}</td>
           <td>{{ item.LaborDtl_Shift }}</td>
           <td>{{ item.EmpBasic_Name }}</td>
+          <td>{{ item.LaborDtl_Assembly }}</td>
         </tr>
       </tbody>
     </table>

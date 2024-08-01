@@ -1,14 +1,22 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import e from 'express';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductComponent } from '../components/product/product.component'; 
 import { ProductService } from '../services/product.service';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { trigger } from '@angular/animations';
+import { json } from 'stream/consumers';
+import { OtrosProcesosModule } from '../otros-procesos/otros-procesos.module';
+
+import { routes } from '../app.routes';
+import { provideRouter } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { ModalsService } from '../modals.service';
+import { CodigosdespComponent } from '../otros-procesos/codigosdesp/codigosdesp.component';
+
+
 
 interface Reporte {
   employeeId: string;
@@ -17,15 +25,18 @@ interface Reporte {
   description: string;
   machine: string;
   pesoBascula: string;
+  basicName: string;
+  notes: string;
 }
-
 
 @Component({
   selector: 'app-employee-form',
   standalone: true,
-  imports: [ FormsModule, ProductComponent, CommonModule ],
+  imports: [FormsModule, ProductComponent, CommonModule, RouterModule],
   templateUrl: './employee-form.component.html',
-  styleUrl: './employee-form.component.css'
+  styleUrl: './employee-form.component.css',
+  providers: [   ]
+  
 })
 
 
@@ -34,11 +45,12 @@ export class EmployeeFormComponent implements OnInit {
   jobNum: string | null = null;
   basicName: string | null = null;
   machine: string | null = null;
+  notes: string | null = null;
   public selectedScrapCode: any;
   public selectedDescription: string = '';
   public active: boolean = false;
   public codigosDespSellado: any[] = [];
-  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIxNzEzOTM2Njk1IiwiaWF0IjoiMTcxMzg3NjY5NSIsImlzcyI6ImVwaWNvciIsImF1ZCI6ImVwaWNvciIsInVzZXJuYW1lIjoicHJhY3Rfc2lzdGVtYXMxIn0.dBDrdeT-nPy5xvtvraAaIgqYowa3A_khNnLLPulLgQQ';
+  private token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIxNzE0NDU2ODM1IiwiaWF0IjoiMTcxNDM5NjgzNSIsImlzcyI6ImVwaWNvciIsImF1ZCI6ImVwaWNvciIsInVzZXJuYW1lIjoicHJhY3Rfc2lzdGVtYXMxIn0.ZDeevJ0i60ZWV_X4sTdFv5QXywdlRC0QPHiPnzsQiSg';
   private api_urlcodes= "https://centralusdtapp73.epicorsaas.com/SaaS5333/api/v1/BaqSvc/jgrc_codigos_scrap(ALICO)/";
   public filteredProducts: any[] = [];
   public productList: any[] = [];
@@ -48,9 +60,13 @@ export class EmployeeFormComponent implements OnInit {
   reportes: Reporte[] = [];
   registroSeleccionado: any;
   private editIndex: number | null = null;
+  jsonData: any;
+  url: any;
+  convertJson: any;
+ 
 
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private productService: ProductService, private httpClient: HttpClient) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private productService: ProductService, private httpClient: HttpClient, @Inject(MatDialogRef) public dialogRef: MatDialogRef<EmployeeFormComponent>,public dialog: MatDialog,
+  private router: Router, private modalsService: ModalsService) {
     this.employeeId = data.id;
     this.jobNum = data.jobNum;
     this.basicName = data.basicName;
@@ -59,26 +75,22 @@ export class EmployeeFormComponent implements OnInit {
     if (data.codigosDespSellado) {
       this.codigosDespSellado = data.codigosDespSellado;
     }
-  
   }
 
   ngOnInit(): void {  
-      this.loadCodes();
-    };
+    this.loadCodes();
+  };
   
-
-    searchEmployee(): void {
-      if (Array.isArray(this.productList)) {
-        this.filteredProducts = this.productList.filter((item: any) => 
-          item.LaborDtl_EmployeeNum === this.employeeId
-        );
-        console.log(this.datosApi);
-        console.log(this.filteredProducts); 
-        this.datosApi = this.filteredProducts;
-        this.active = this.filteredProducts.length > 0; 
-      } else {
-        console.error('productList is not an array:', this.productList);
-      }
+    searchEmployee(id: string): void {
+      this.productService.getEmployeeById(id).subscribe({
+        next: (data) => {
+          this.employeeId = data;
+          this.productService.setEmployeeData(data); // Almacena los datos en el servicio
+        },
+        error: (err) => {
+          console.error('Error fetching employee:', err);
+        }
+      });
     }
 
   
@@ -129,14 +141,16 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     guardarReporte(): void {
-      const nuevoReporte: Reporte = {
+        const nuevoReporte: Reporte = {
           employeeId: this.employeeId!,
           jobNum: this.jobNum!,
           machine: this.machine!,
           scrapCode: this.selectedScrapCode.Reason_ReasonCode,
           description: this.selectedDescription,
-          pesoBascula: this.pesoBascula
-      };
+          pesoBascula: this.pesoBascula,
+          basicName: this.basicName!,
+          notes: this.notes!
+        };
       if (this.editIndex !== null && this.editIndex !== undefined) {
         // Estamos en modo de edición, actualizamos el reporte existente
         this.reportes[this.editIndex] = nuevoReporte;
@@ -145,7 +159,12 @@ export class EmployeeFormComponent implements OnInit {
         // Estamos añadiendo un nuevo reporte
         this.reportes.push(nuevoReporte);
       }
+      console.log(this.reportes);
+      this.convertJson = JSON.stringify(this.reportes);
+      console.log(this.convertJson);   
   }
+
+
   
   accionSeleccionada(event: Event, index: number): void {
     const target = event.target as HTMLSelectElement;
@@ -156,7 +175,7 @@ export class EmployeeFormComponent implements OnInit {
     } else if (accion === 'eliminar') {
         this.eliminarReporte(index);
     }
-}
+  }
 
 cargarDatosParaEditar(index: number): void {
     const reporte = this.reportes[index];
@@ -176,5 +195,41 @@ cargarDatosParaEditar(index: number): void {
         }
     }
     
+
+
+    postReporte(jsonData: string, url: string): Observable<any> {
+      const apiUrl = `https://centralusdtpilot73.epicorsaas.com/saas5333pilot/api/v2/efx/ALICO/JGRCud06/${url}`;
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'X-API-Key': 'vMGRf6ryrOBOttpzlyBi60qviKImvIMW6Dnsb5GeJewpn',
+        'Authorization': 'Basic ZXh0ZXJuYWxfYXBpOjEwMjRtYi0xVA=='
+      });
+
+      return this.httpClient.post<any>(apiUrl, jsonData, { headers });
+    }
+
+    onClose(): void {
+      this.dialogRef.close();
+      this.router.navigate(['/']);
+    }
+    openOtherProcesses(): void {
+      const dialogRef = this.dialog.open(CodigosdespComponent, {
+        width: '1100px',
+        disableClose: false,
+        data: { employeeId: this.employeeId, jobNum: this.jobNum, basicName: this.basicName, machine: this.machine }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Otros Procesos modal closed');
+      });
+    }
+
+  
+    public openEmployeeForm(employeeId: string, jobNum: string, basicName: string, machine: string): void {
+      this.modalsService.openEmployeeForm(employeeId, jobNum, basicName, machine);
+    }
   
 }
+  
+  
+

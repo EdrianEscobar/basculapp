@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { EmployeeFormComponent } from '../../employee-form/employee-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgOptimizedImage } from '@angular/common';
+import { ModalsService } from '../../modals.service';
 
 
 @Component({
@@ -21,7 +22,6 @@ import { NgOptimizedImage } from '@angular/common';
   
 })
 export class ProductComponent implements OnInit{
-  //productList: ProductInterface [] = [];
   public productList: any[] = [];
   public filteredProducts: any[] = [];
   public employeeId: string = '';
@@ -35,10 +35,12 @@ export class ProductComponent implements OnInit{
   employeeSelected:any [] = [];
   employeeIds: string[] = [];
   selectedEmployeeId: string = '';
+ 
   
 
 
-  constructor(private productService: ProductService , private http:HttpClient, private router: Router, public dialog: MatDialog) { }
+  constructor(private productService: ProductService , private http:HttpClient, private router: Router, public dialog: MatDialog,
+    private modalsService: ModalsService) { }
 
     ngOnInit(): void {
       this.getProducts();
@@ -60,7 +62,6 @@ export class ProductComponent implements OnInit{
       this.productService.codesDespSellado().subscribe(
         (codes) => {
           this.codigosDespSellado = codes;
-          //console.log(this.codigosDespSellado);
         },
         (err) => console.error('Error fetching scrap codes:', err)
       );
@@ -98,27 +99,15 @@ export class ProductComponent implements OnInit{
       this.router.navigate(['/employee-form', employeeId]);
     }
 
-
-    openDialog(employeeId: string, jobNum: string, basicName: string, machine: string): void {
-      const dialogRef = this.dialog.open(EmployeeFormComponent, {
-        width: '700px',
-        data: {
-          id: employeeId,
-          jobNum: jobNum,
-          basicName: basicName,
-          machine: machine,
-          codigosDespSellado: this.codigosDespSellado  
-        }
-      });
     
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-        
-      });
+    public openEmployeeForm(employeeId: string, jobNum: string, basicName: string, machine: string): void {
+      this.modalsService.openEmployeeForm(employeeId, jobNum, basicName, machine);
     }
 
-    
-    
+    public openOtherProcesses(): void {
+      this.modalsService.openOtrosProcesos();
+    }
+
 }
 
 export { ProductService };

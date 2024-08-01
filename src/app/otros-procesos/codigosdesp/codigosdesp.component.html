@@ -1,0 +1,154 @@
+<link rel="stylesheet" href="codigosdesp.component.css">
+<div class="form-container" style="background-color: rgb(253, 253, 253);">
+    <button type="button" (click)="onClose()">X</button>
+    <p style="font-size: 24px; font-weight: bold; color: #0511f4; text-align: center; margin-top: 20px;">
+      Desperdicios Otros Procesos
+    </p>
+  
+    <div class="row">
+      <div class="column">
+        <label for="employeeId">ID Empleado:</label>
+        <h1 style="font-size: 22px; color: #666;">{{ employeeId }}</h1>
+      </div>
+      <div class="column">
+        <label for="Nombre">Nombre del empleado:</label>
+        <h1 style="font-size: 22px; color: #666;">{{ basicName }}</h1>
+      </div>
+      <div class="column">
+        <label for="jobNum">Trabajo:</label>
+        <h1 style="font-size: 22px; color: #666;">{{ jobNum }}</h1>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="column">
+        <div class="form-group">
+          <label for="scrapCode">Proceso:</label>
+          <select [(ngModel)]="selectedProceso" (change)="onProcesoChange()">
+            <option *ngFor="let proceso of operaciones" [value]="proceso">{{ proceso }}</option>
+          </select>          
+        </div>
+      </div>
+      <div class="column">
+        <input type="checkbox" [(ngModel)]="esExtruder" (change)="onCheckboxChange()" /> Es Extruder?
+      </div>
+      <div class="column">
+        <label for="pesoBascula">Peso:</label>
+        <input type="text" id="pesoBascula" [(ngModel)]="pesoBascula" name="pesoBascula">
+      </div>
+      <div class="column">
+        <label for="motivo">Motivo:</label>
+        <input 
+          id="motivo" 
+          type="text" 
+          [(ngModel)]="selectedMotivo" 
+          (input)="onMotivoChange()"
+          pattern="\d*" 
+          maxlength="3"
+        />
+      </div>
+      <div class="column">
+        <label for="motivoDescripcion">Descripción del Motivo:</label>
+        <input 
+          id="motivoDescripcion" 
+          type="text" 
+          [value]="motivoDescripcion"
+          disabled
+        />
+      </div>
+       
+    </div> 
+    <div class="row">
+      <div class="column full-width">
+        <label for="label">Notas:</label>
+        <textarea id="notes" name="notes" rows="4" placeholder="Escribe tus notas aquí..." [(ngModel)]="notes"></textarea>
+      </div>
+    </div>
+    <div class="column">
+      <button id="send" type="button" >Guardar</button>
+    </div>
+  
+    <div class="table-container" style="overflow-x: auto; width: 100%;">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+        <ng-container matColumnDef="LaborDtl_EmployeeNum">
+          <th mat-header-cell *matHeaderCellDef> Employee Number </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_EmployeeNum}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="EmpBasic_Name">
+          <th mat-header-cell *matHeaderCellDef> Employee Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.EmpBasic_Name}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_LaborHedSeq">
+          <th mat-header-cell *matHeaderCellDef> LaborHedSeq </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_LaborHedSeq}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_LaborDtlSeq">
+          <th mat-header-cell *matHeaderCellDef> LaborDtlSeq </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_LaborDtlSeq}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="JobHead_PartNum">
+          <th mat-header-cell *matHeaderCellDef> Part Number </th>
+          <td mat-cell *matCellDef="let element"> {{element.JobHead_PartNum}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_ClockInDate">
+          <th mat-header-cell *matHeaderCellDef> Clock In Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_ClockInDate}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_JobNum">
+          <th mat-header-cell *matHeaderCellDef> Job Number </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_JobNum}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_LaborType">
+          <th mat-header-cell *matHeaderCellDef> Labor Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_LaborType}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_OpCode">
+          <th mat-header-cell *matHeaderCellDef> Operation Code </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_OpCode}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_OprSeq">
+          <th mat-header-cell *matHeaderCellDef> Operation Sequence </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_OprSeq}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="LaborDtl_ResourceID">
+          <th mat-header-cell *matHeaderCellDef> Resource ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.LaborDtl_ResourceID}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="OpMaster_OpDesc">
+          <th mat-header-cell *matHeaderCellDef> Operation Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.OpMaster_OpDesc}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Resource_Description">
+          <th mat-header-cell *matHeaderCellDef> Resource Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.Resource_Description}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Calculated_Tipo_Labor">
+          <th mat-header-cell *matHeaderCellDef> Tipo Labor </th>
+          <td mat-cell *matCellDef="let element"> {{element.Calculated_Tipo_Labor}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="LaborDtl_Company">
+          <th mat-header-cell *matHeaderCellDef style="width: 150px;"> Compañía </th>
+          <td mat-cell *matCellDef="let element" style="width: 150px;"> {{element.LaborDtl_Company}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    
+  

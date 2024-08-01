@@ -13,3 +13,7 @@ export interface ProductInterface {
    LaborDtl_Shift: number;
    EmpBasic_Name: string;
 }
+
+export interface ScrapCode {
+   reasonCode: string;
+ }
